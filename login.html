@@ -1,0 +1,24 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Login</title>
+</head>
+<body>
+<div class="login-container">
+  <h2>Get Training Access Token For DigiMal KE Demo access</h2>
+  <div>
+    <input type="text" id="digi_id" placeholder="Username" required>
+    <input type="password" id="digi_password" placeholder="Password" required>
+    <input type="submit" id="accessTokenBtn" value="Login">
+  </div>
+</div>
+
+<script src="js/accessToken.js"></script>
+</body>
+</html>
+
+
+<!-- This code creates a simple login form with fields for username and password. When the form is submitted, it calls the authenticate function to check the credentials against the dummy user data. If the credentials are valid, it then checks the access level using the checkAccessLevel function. If access is granted, it redirects the user to a page where you can visualize the data. Otherwise, it shows an alert indicating access is denied or credentials are invalid. -->

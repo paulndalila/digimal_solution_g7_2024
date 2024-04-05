@@ -141,3 +141,16 @@ function isAuthenticated() {
     // Check if the user information exists in local storage
     return localStorage.getItem("user") !== null;
 }
+
+// Function to load JSON file
+function loadJSON(callback) {
+    var xobj = new XMLHttpRequest();
+    xobj.overrideMimeType("application/json");
+    xobj.open('GET', 'json-server/db.json', true); // Replace 'your_file_path.json' with the path to your JSON file
+    xobj.onreadystatechange = function () {
+        if (xobj.readyState == 4 && xobj.status == "200") {
+            callback(JSON.parse(xobj.responseText));
+        }
+    };
+    xobj.send(null);
+  }

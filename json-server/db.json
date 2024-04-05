@@ -13,10 +13,34 @@
       "Longitude": "34.7483924"
     },
     {
-      "id": "a0c0",
-      "org_id": "OU735888",
-      "Latitude": "-0.2371326",
-      "Longitude": "35.736813"
+      "id": "47b5",
+      "org_id": "OU853797",
+      "Latitude": "-0.0842583",
+      "Longitude": "34.7832867"
+    },
+    {
+      "id": "0bf3",
+      "org_id": "OU207453",
+      "Latitude": "-0.0874335",
+      "Longitude": "34.7816227"
+    },
+    {
+      "id": "d866",
+      "org_id": "OU461319",
+      "Latitude": "-0.0767386",
+      "Longitude": "35.013792"
+    },
+    {
+      "id": "72c7",
+      "org_id": "OU630287",
+      "Latitude": "-0.2072849",
+      "Longitude": "34.8674199"
+    },
+    {
+      "id": "b070",
+      "org_id": "OU436887",
+      "Latitude": "-0.1131509",
+      "Longitude": "35.1141949"
     }
   ]
 }

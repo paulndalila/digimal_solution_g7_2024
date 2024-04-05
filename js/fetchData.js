@@ -124,7 +124,7 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   //locating the village with village name only in fetching request
-  function locate_village(villageName, org_id, parent_id){
+  function locate_village_bb(villageName, org_id, parent_id){
     villageName = villageName.replace(/\bvillage\b/gi, '').trim();
     const words = villageName.split(' ');
 
@@ -174,11 +174,15 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   //locating a village with both sub-location and village name in fetching request
-  function locate_village_b(villageName, org_id, parent_id){
+  function locate_village(villageName, org_id, parent_id){
     var parent_name = '';
+    const county_id = document.getElementById('county_select').value
+    //console.log(county_id)
+
+
     //console.log(parent_id)
 
-    fetch(`https://training.digimal.uonbi.ac.ke/api/get_org_unit_with_children?org_id=${parent_id}`, {
+    fetch(`https://training.digimal.uonbi.ac.ke/api/get_org_unit_with_children?org_id=${county_id}`, {
       method: "GET",
       headers: { Authorization: `Bearer ${token}` },
     })
@@ -193,6 +197,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
       if (newVillageName) {
         var input_query = newVillageName+', '+parent_name;
+        //console.log(newVillageName)
+        //console.log(parent_name)
         
         fetch(`https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(input_query)}`)
           .then(response => response.json())
@@ -331,6 +337,39 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
   }
+
+  ///load json and map all markers
+  loadJSON(async function(jsonData) {
+    //console.log(jsonData.data); 
+
+    var markers = L.markerClusterGroup();
+
+    // Iterate over JSON data and create markers
+    jsonData.data.forEach( async function(location) {
+        var myIcon = L.icon({
+            iconUrl: './maps/images/pin24.png',
+            iconRetinaUrl: './maps/images/pin48.png',
+            iconSize: [29, 24],
+            iconAnchor: [9, 21],
+            popupAnchor: [0, -14],
+        })    
+
+        const villageName = await returnLocationName(location.org_id);
+        //console.log(villageName)
+
+        var Lpopup = '<div id="'+location.id+'"><b>Village: </b> '+villageName+' <br/><b>Distribution posts: </b> 0 <br/><b>Households: </b> 0 <br/><b>Latitude: </b>'+location.Latitude+'<br/><b>Longitude: </b>'+location.Longitude+'</div>'
+
+        var marker = await L.marker([parseFloat(location.Latitude), parseFloat(location.Longitude)], {
+          icon: myIcon,
+          }).bindPopup(Lpopup);
+
+        markers.addLayer(marker);
+    });
+
+    // Add marker cluster group to the map
+    map.addLayer(markers);
+  });
+
 
   // Function to handle button replacement
   function replaceButton() {

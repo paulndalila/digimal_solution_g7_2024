@@ -56,6 +56,7 @@ function zoomIntoCounty(theLocation, distinct){
     
 }
 
+//show details on the dashboard
 function putTableStats(type, location, lat, lon){
     document.getElementById('stats').style.display = 'block';
     const table_stats = document.getElementById('stats_table');
@@ -153,4 +154,4 @@ function loadJSON(callback) {
         }
     };
     xobj.send(null);
-  }
+}

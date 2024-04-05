@@ -1,4 +1,6 @@
-document.getElementById('accessTokenBtn').addEventListener('click', function(){
+document.getElementById('accessTokenForm').addEventListener('submit', async function(event) {
+    event.preventDefault(); // Prevent default form submission
+    
     const digimal_id = document.getElementById('digi_id').value;
     const digimal_password = document.getElementById('digi_password').value;
 
@@ -6,18 +8,19 @@ document.getElementById('accessTokenBtn').addEventListener('click', function(){
         id_no: digimal_id,
         password: digimal_password
     };
-    
-    fetch('https://training.digimal.uonbi.ac.ke/api/login', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(postUserData)
-    })
-    .then(response => response.json())
-    .then(data => {
-        console.log(data)
-        if(data.success) {
+
+    try {
+        const response = await fetch('https://training.digimal.uonbi.ac.ke/api/login', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(postUserData)
+        });
+
+        const data = await response.json();
+
+        if (data.success) {
             // If login is successful, store the token in local storage
             localStorage.setItem('accessToken', data.token);
             alert('Access token fetched successfully');
@@ -25,9 +28,7 @@ document.getElementById('accessTokenBtn').addEventListener('click', function(){
         } else {
             alert('Access token refresh failed');
         }
-    })
-    .catch(error => {
+    } catch (error) {
         console.error('Error:', error);
-    });
-    
-})
+    }
+});

@@ -174,60 +174,43 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   //locating a village with both sub-location and village name in fetching request
-  function locate_village(villageName, org_id, parent_id){
-    var parent_name = '';
+  async function locate_village(villageName, org_id, parent_id){
+    // var parent_name = '';
     const county_id = document.getElementById('county_select').value
-    //console.log(county_id)
+
+    var parent_name = await returnLocationName(county_id);
+
+    parent_name = getFirstWordOfThePlace(parent_name);
+
+    villageName = villageName.replace(/\bvillage\b/gi, '').trim();
+
+    newVillageName = getFirstWordOfThePlace(villageName);
 
 
-    //console.log(parent_id)
+    if (newVillageName) {
+      var input_query = newVillageName+', '+parent_name;
+      
+      fetch(`https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(input_query)}`)
+        .then(response => response.json())
+        .then(data => {
+          
+          const filteredAddresses = data.filter(element => {
+            return element.display_name.includes("Kenya");
+          });                   
 
-    fetch(`https://training.digimal.uonbi.ac.ke/api/get_org_unit_with_children?org_id=${county_id}`, {
-      method: "GET",
-      headers: { Authorization: `Bearer ${token}` },
-    })
-    .then(response => response.json())
-    .then(data => {
+          if (filteredAddresses.length > 0) {
+            show_map_and_pin_location('village', villageName, filteredAddresses[0].lat, filteredAddresses[0].lon, org_id)
+          } else {
+            alert("The village was not found, login to pin point and add the new village:");
+          }
 
-      //console.log('success fetching parent')
-      parent_name = getFirstWordOfThePlace(data.message[0].name);
-
-      villageName = villageName.replace(/\bvillage\b/gi, '').trim();
-      newVillageName = getFirstWordOfThePlace(villageName);
-
-      if (newVillageName) {
-        var input_query = newVillageName+', '+parent_name;
-        //console.log(newVillageName)
-        //console.log(parent_name)
-        
-        fetch(`https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(input_query)}`)
-          .then(response => response.json())
-          .then(data => {
-
-            //console.log('success fetching village')
-            
-            const filteredAddresses = data.filter(element => {
-              return element.display_name.includes("Kenya");
-            });                   
-
-            if (filteredAddresses.length > 0) {
-              show_map_and_pin_location('village', villageName, filteredAddresses[0].lat, filteredAddresses[0].lon, org_id)
-            } else {
-              alert("The village was not found, Enter nearby locations manually on the search bar  i.e location, village:");
-            }
-
-          })
-          .catch(error => {
-            console.error('Error fetching coordinates:', error);
-          });
-      } else {
-        console.error('Error fetching coordinates:');
-      }
-    })
-    .catch(error => {
-      console.error('Error fetching coordinates:', error);
-    });
-
+        })
+        .catch(error => {
+          console.error('Error fetching coordinates:', error);
+        });
+    } else {
+      console.error('Error fetching coordinates:');
+    }
     
   }
 

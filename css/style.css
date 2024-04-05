@@ -507,6 +507,25 @@ html{
       font-size: 14px;
     } */
 
+    
+
+  .navbar{
+    padding: 5px 10px;
+  }
+
+  .dropdowns{
+    gap: 5px;
+    justify-content: space-between;
+    overflow-x: hidden;
+    width: 100%;
+    padding: 5px 10px;
+    flex-wrap: wrap;
+  }  
+
+  .dropdowns_search{
+    padding-right: 0;
+  }
+
     #search_household_btn{
       display: none;
     }
@@ -515,13 +534,9 @@ html{
       display: flex;
     }
 
-    .dropdowns{
-      flex-wrap: wrap;
-    }
-
     .dropdowns select{
       /* flex-grow: 1; */
-      width: 48%;
+      width: 48.5%;
     }
 
     #dashboard{

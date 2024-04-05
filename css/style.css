@@ -497,12 +497,20 @@ html{
     cursor: pointer;
     border-radius: 4px;
     border: 1px solid rgba(128, 128, 128, 0.658);
-    font-size: 6px;
+    font-size: 12px;
     width: fit-content;
-    margin-top: 90%;
+    margin-top: 85%;
   }
   
   @media only screen and (max-width: 800px){
+    /* .logo h3{
+      font-size: 14px;
+    } */
+
+    #search_household_btn{
+      display: none;
+    }
+
     #hamburger{
       display: flex;
     }
@@ -512,7 +520,8 @@ html{
     }
 
     .dropdowns select{
-      flex-grow: 1;
+      /* flex-grow: 1; */
+      width: 48%;
     }
 
     #dashboard{
@@ -545,5 +554,33 @@ html{
 
     .form-container form{
       width: 100%;
+    }
+
+    
+
+  .form_container{
+    display: flex;
+    font-family: 'Inter', 'Poppins', sans-serif;
+    flex-direction: column;
+    text-align: left;
+    gap: 30px;
+    margin: auto;
+    width: 100%;
+    margin-bottom: 100px;
+  }
+
+  .form_container h2, .form_container h3, .form_container span, label{
+    font-family: 'Inter', 'Poppins', sans-serif;
+  }
+
+  .form_container h3, .form_container span{
+    font-size: 24px;
+    font-weight: 500;
+    color: #20c997;
+  }
+
+    a#accessTokenLink{
+      margin-top: 35%;
+      z-index: 999;
     }
   }

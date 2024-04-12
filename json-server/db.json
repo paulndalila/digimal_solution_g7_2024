@@ -47,6 +47,36 @@
       "org_id": "OU377065",
       "Latitude": "-0.8919036",
       "Longitude": "34.7467484"
+    },
+    {
+      "id": "c84e",
+      "org_id": "OU918148",
+      "Latitude": "-0.0042805",
+      "Longitude": "34.6123226"
+    },
+    {
+      "id": "2a42",
+      "org_id": "OU164674",
+      "Latitude": "-0.3324064",
+      "Longitude": "34.9813756"
+    },
+    {
+      "id": "97e5",
+      "org_id": "OU469522",
+      "Latitude": "0.0450977",
+      "Longitude": "34.5609811"
+    },
+    {
+      "id": "44f3",
+      "org_id": "OU143234",
+      "Latitude": "-0.0907503",
+      "Longitude": "34.7812172"
+    },
+    {
+      "id": "0c92",
+      "org_id": "OU436887",
+      "Latitude": "-0.1131509",
+      "Longitude": "35.1141949"
     }
   ]
 }

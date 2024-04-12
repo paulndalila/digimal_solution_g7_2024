@@ -41,6 +41,7 @@ locationInput.addEventListener("input", function() {
                 });  
 
                 filteredAddresses.forEach(element => {
+                  console.log(element.display_name)
                     const li = document.createElement("li");
                     li.textContent = `${element.display_name}`;
                     li.addEventListener("click", function() {                    

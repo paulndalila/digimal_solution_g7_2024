@@ -178,9 +178,14 @@ document.addEventListener("DOMContentLoaded", () => {
     // var parent_name = '';
     const county_id = document.getElementById('county_select').value
 
-    var parent_name = await returnLocationName(county_id);
+    var county_name = await returnLocationName(county_id);
+    var parent_name = await returnLocationName(parent_id);
 
+    //get sub county first name and remove 'county' from name
     parent_name = getFirstWordOfThePlace(parent_name);
+
+    //get county first name and remove 'county' from name
+    county_name = getFirstWordOfThePlace(county_name);
 
     villageName = villageName.replace(/\bvillage\b/gi, '').trim();
 
@@ -188,9 +193,12 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
     if (newVillageName) {
-      var input_query = newVillageName+', '+parent_name;
+
+      //fetch from parent first
+      var input_query1 = newVillageName+', '+parent_name;
+      console.log('input_query1: '+input_query1)
       
-      fetch(`https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(input_query)}`)
+      fetch(`https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(input_query1)}`)
         .then(response => response.json())
         .then(data => {
           
@@ -199,9 +207,33 @@ document.addEventListener("DOMContentLoaded", () => {
           });                   
 
           if (filteredAddresses.length > 0) {
+
             show_map_and_pin_location('village', villageName, filteredAddresses[0].lat, filteredAddresses[0].lon, org_id)
           } else {
-            alert("The village was not found, login to pin point and add the new village:");
+
+            //fetch from county
+            var input_query = newVillageName+', '+county_name;  
+            console.log('input_query: '+input_query)
+                
+            fetch(`https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(input_query)}`)
+              .then(response => response.json())
+              .then(data => {
+                
+                const filteredAddresses = data.filter(element => {
+                  return element.display_name.includes("Kenya");
+                });                   
+
+                if (filteredAddresses.length > 0) {
+                  show_map_and_pin_location('village', villageName, filteredAddresses[0].lat, filteredAddresses[0].lon, org_id)
+                } else {
+                  //fetch from county
+                  alert("The village was not found, login to pin point and add the new village:");
+                }
+
+              })
+              .catch(error => {
+                console.error('Error fetching coordinates:', error);
+              });
           }
 
         })
@@ -242,7 +274,7 @@ document.addEventListener("DOMContentLoaded", () => {
       return data.message[0].name;
     } catch (error) {
       console.log('Error fetching location name:', error);
-      throw error; // Re-throw the error for handling outside of this function if needed
+      //throw error; // Re-throw the error for handling outside of this function if needed
     }
   }
 

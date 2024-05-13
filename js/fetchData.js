@@ -157,22 +157,6 @@ document.addEventListener("DOMContentLoaded", () => {
       }
   }
 
-  function getFirstWordOfThePlace(sentence) {
-    if(sentence.includes('Sub County')){
-      console.log(sentence.replace(/\b(?:county|sub\scounty)\b/gi, '').trim())
-      return sentence.replace(/\b(?:county|sub\scounty)\b/gi, '').trim();
-    }else if(sentence.includes('County')){
-      console.log(sentence.replace(/\bcounty\b/gi, '').trim())
-      return sentence.replace(/\bcounty\b/gi, '').trim();
-    }else if(sentence.includes('Ward')){
-      console.log(sentence.replace(/\ward\b/gi, '').trim())
-      return sentence.replace(/\ward\b/gi, '').trim();
-    }else{
-      var place = sentence.split(" ");
-      return place[0];
-    }
-  }
-
   //locating a village with both sub-location and village name in fetching request
   async function locate_village(villageName, org_id, parent_id){
     // var parent_name = '';
@@ -227,7 +211,8 @@ document.addEventListener("DOMContentLoaded", () => {
                   show_map_and_pin_location('village', villageName, filteredAddresses[0].lat, filteredAddresses[0].lon, org_id)
                 } else {
                   //fetch from county
-                  alert("The village was not found, login to pin point and add the new village:");
+                  //alert("The village was not found, login to pin point and add the new village:");
+                  document.getElementById('add_village_popup').style.display = 'block';
                 }
 
               })
@@ -338,7 +323,7 @@ document.addEventListener("DOMContentLoaded", () => {
       // document.getElementById('ward_select').innerHTML = `<option value="${org_id}">${locationName}</option>`;
 
       //location level
-      getLocation(parent_id, 'ward')
+      getLocation(parent_id, 'ward');
       document.getElementById('location_select').innerHTML = `<option value="${org_id}">${locationName}</option>`;
       fetchDataAndPopulateDropdown("get_sub_counties_list", org_id, "sub_location_select", "Sub_location");
       
@@ -397,7 +382,6 @@ document.addEventListener("DOMContentLoaded", () => {
       //fetch and display user levels
       const userData = localStorage.getItem("user");
       const user = JSON.parse(userData);
-
       console.log(user)
 
       processUser(user.level, user.org_Id, user.parent_Id);

@@ -127,6 +127,28 @@ function postData(){
     }
 }
 
+//get first word in a sentence or phrase
+function getFirstWordOfThePlace(sentence) {
+  if(sentence.includes('Sub County')){
+    console.log(sentence.replace(/\b(?:county|sub\scounty)\b/gi, '').trim())
+    return sentence.replace(/\b(?:county|sub\scounty)\b/gi, '').trim();
+  }else if(sentence.includes('County')){
+    console.log(sentence.replace(/\bcounty\b/gi, '').trim())
+    return sentence.replace(/\bcounty\b/gi, '').trim();
+  }else if(sentence.includes('Ward')){
+    console.log(sentence.replace(/\ward\b/gi, '').trim())
+    return sentence.replace(/\ward\b/gi, '').trim();
+  }else{
+    var place = sentence.split(" ");
+    return place[0];
+  }
+}
+
+//Full screen view of the map
+function fullScreenView(){
+    document.getElementById('map').requestFullscreen();
+}
+
 //when my account is clicked, open login form
 function openForm(){
     document.getElementById('login-container').style.display = 'flex';
@@ -155,3 +177,19 @@ function loadJSON(callback) {
     };
     xobj.send(null);
 }
+
+//events after the new village button is clicked
+//close village popup
+document.getElementById('close_village_popup').addEventListener('click', function(){
+    document.getElementById('add_village_popup').style.display = 'none';
+        
+    //Supposed to show button
+    if (isAuthenticated()) {
+        document.getElementById('add_village_btn').style.display = 'block';
+    }
+})
+
+document.getElementById('add_village_btn').addEventListener('click', function(){
+    document.getElementById('map').style.cursor = 'pointer';
+})
+

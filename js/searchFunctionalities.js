@@ -2,11 +2,20 @@ const locationInput = document.getElementById("search");
 const resultsList = document.getElementById("resultsList");
 
 locationInput.addEventListener("input", async function() {
-  const villageName = this.value.trim();     
 
-  // resultsList.innerHTML = "<p>loading...</p>";
+  let villageName = this.value.trim(); 
 
-  if (villageName.length > 0) { 
+  if(isAuthenticated() && villageName.length > 0){
+    const user_level = JSON.parse(localStorage.getItem("user"));
+    const user_level_location_name = getFirstWordOfThePlace(user_level['name']);
+
+    villageName = villageName+', '+user_level_location_name;
+
+    // console.log(villageName);
+  }
+  
+  if(villageName.length > 0){
+
     try {
       const response = await fetch(`https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(villageName)}`);
 
@@ -31,8 +40,8 @@ locationInput.addEventListener("input", async function() {
       console.log('Error fetching location name:', error);
       throw error; // Re-throw the error for handling outside of this function if needed
     }
-
   }
+  
 });
 
 

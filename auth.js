@@ -47,11 +47,6 @@ const users = [
 ];
 
 
-
-
-
-
-
 // Function to authenticate user
 function authenticate(username, password) {
   const parsedUsername = parseInt(username); // Parse username to a number
@@ -60,21 +55,19 @@ function authenticate(username, password) {
   );
 }
 
-document
-  .getElementById("login-form")
-  .addEventListener("submit", function (event) {
-    event.preventDefault();
-    const username = document.getElementById("username").value;
-    const password = document.getElementById("password").value;
+document .getElementById("login-form").addEventListener("submit", function (event) {
+  event.preventDefault();
+  const username = document.getElementById("username").value;
+  const password = document.getElementById("password").value;
 
-    // Call the authenticate function
-    const user = authenticate(username, password);
+  // Call the authenticate function
+  const user = authenticate(username, password);
 
-    if (user) {
-      // Store user information in local storage
-      localStorage.setItem("user", JSON.stringify(user));
-      window.location.href = "index.html";
-    } else {
-      alert("Invalid credentials.");
-    }
-  });
+  if (user) {
+    // Store user information in local storage
+    localStorage.setItem("user", JSON.stringify(user));
+    window.location.href = "index.html";
+  } else {
+    alert("Invalid credentials.");
+  }
+});

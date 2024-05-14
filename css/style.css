@@ -205,9 +205,30 @@ html{
   }
 
   #dashboard{
-    width: 220px;
+    /* width: 220px; */
+    width: 250px;
+    height: 90%;
     padding: 10px;
+    overflow: hidden;
+    overflow-y: auto;
   }
+
+  #dashboard::-webkit-scrollbar {
+    /* width: 1px;Width of the entire scrollbar */
+    width: 8px;
+  }
+ 
+ /* Handle */
+ #dashboard::-webkit-scrollbar-thumb {
+   background-color: #d8d6d6;
+   border-radius: 10px;
+ }
+ 
+ /* Handle on hover */
+ #dashboard::-webkit-scrollbar-thumb:hover {
+   background-color: #20c997;
+   cursor: pointer;
+ }
 
   #dashboard h3{
     /* text-align: center; */
@@ -253,7 +274,7 @@ html{
     flex-direction: column;
     gap: 5px;
   }
-  .post_btn{
+  .post_btn, .add_village_coordinates_btn{
     background-color: #20c997;
     border-radius: 4px;
     cursor: pointer;
@@ -502,6 +523,13 @@ html{
     /* margin-top: 85%; */
   }
 
+  #add_village_btn{
+    transform: .3s;
+  }
+
+  #add_village_btn:hover{
+    opacity: 0.9;
+  }
   #add_village_popup{
     position: absolute;
     z-index: 999;
@@ -512,7 +540,24 @@ html{
     text-align: justify;
     border: 2px dashed #20c997;
     background-color: #fff;
-    
+    box-shadow: 0 0 20px #fff;    
+  }
+
+  #add_village_popup ol{
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+  }
+
+  #add_village_popup li{
+    font-size: 14px;
+  }
+  #add_village_popup p{
+    font-size: 12px;
+    text-align: center;
+    font-weight: bold;
+    color: gray;
+    padding: 10px 0;
   }
 
   #add_village_popup div{

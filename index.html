@@ -27,8 +27,8 @@
       <h3>DigiMal-KE</h3>
     </div>
     <div class="buttons" id="buttons">
-      <button id="search_household_btn">Search household</button>
-      <button id="add_village_btn" style="display: none;">Add Village</button>
+      <!-- <button id="search_household_btn">Search household</button> -->
+      <button id="add_village_btn" style="display: none;">Double Tap the Map</button>
       <button class="btn" id="loginBtn" onclick="openForm()">Login</button>
     </div>
   </div>
@@ -73,15 +73,20 @@
         <h4>Stats</h4>
         <table id="stats_table">
         </table>
-        <div class="geocodes">
+        <!-- <div class="geocodes">
           <p>Want to post this place's co-ordinates?</p>
           <div>
             <button class="post_btn" onclick="postData()">Post Geocodes</button>
           </div>
-        </div>
+        </div> -->
       </div>
 
       <br/>
+      <!-- <div id="map_hover_lat_lng">
+        <h5>Lat:</h5>
+        <h5>Long:</h5>
+      </div>  -->
+
       <div id="households">
         <h4>DigiMal Stats</h4>
         <table>
@@ -112,30 +117,28 @@
       <div class="geocodes">
         <div>
           <a href="graphs.html" class="post_btn">See Graphs</a>
-          <a href="login.html" id="accessTokenLink">Get DigiMal Access Token</a>
           <button onclick="fullScreenView()">Map Full Screenview</button> 
+          <a href="login.html" id="accessTokenLink">Get DigiMal Access Token</a>
          <script src="js/accessToken.js"></script>
         </div>
-      </div>
-      <div id="map_hover_lat_lng">
-        <h5>Lat:</h5>
-        <h5>Long:</h5>
-      </div>       
+      </div>     
 
     </div>
     <div id="map"></div>
   </div>
 
   <!-- popup for notifying users to add village -->
-  <div id="add_village_popup" style="display: none;" >
+  <div id="add_village_popup" style="display: none;">
     <div>
       <h1>Add New Village?</h1>
       <span id="close_village_popup">&times;</span>
     </div>
     <ol>
-      <li>Must be <b>Logged In</b> first inorder to view the <b>'Add Village'</b> button.</li>
-      <li><b>Drag</b> and <b>Zoom</b> to the new village supposed location, use <b>Landmarks</b> like roads, rivers, etc to identify where the new village is supposed to be.</li>
-      <li><b>Double-Click</b> to select & get a form confirming the details of the new village, then click <b>Submit</b>.</li>
+      <li>Must be <b>Logged In</b> first inorder to <b>Add Village Co-ordinates.</b></li>
+      <li>Double-tap part of the map to get a marker with a defined radius.</li>
+      <li><b>Zoom In</b> & <b>Drag</b> the marker to the new village supposed location, use <b>Landmarks</b> like roads, rivers, etc to identify where the new village is supposed to be.</li>
+      <li>Tap <b>Submit</b> to confirm the co-ordinates of the new village. That's it!</li>
+      <p>NOTE:<i> Details of whoever adds a new village's co-ordinates will be saved to the system, be precise before submission. </i>~</p>
     </ol>
   </div>
 

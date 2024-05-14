@@ -84,8 +84,8 @@ function show_map_and_pin_location(type, location, lat, lon, id){
     
     map.setView([lat, lon], 16);
 
-    //var popup = '<div id="marker_popup"><b>'+type+': </b>'+location + '<br/><b>Latitude: </b>'+lat+'<br/><b>Longitude: </b>'+lon+'<br/><button onClick="postData()" class="post_btn">Post</button></div>'
-    var popup = '<div id="marker_popup"><b>'+type+': </b>'+location + '<br/><b>Latitude: </b>'+lat+'<br/><b>Longitude: </b>'+lon+'</div>'
+    var popup = '<div id="marker_popup"><b>'+type+': </b>'+location + '<br/><b>Latitude: </b>'+lat+'<br/><b>Longitude: </b>'+lon+'<br/><button onClick="postData()" class="post_btn">Post Geocodes</button></div>'
+    //var popup = '<div id="marker_popup"><b>'+type+': </b>'+location + '<br/><b>Latitude: </b>'+lat+'<br/><b>Longitude: </b>'+lon+'</div>'
 
     var m = L.marker([lat, lon], {
     icon: myIcon,
@@ -189,7 +189,70 @@ document.getElementById('close_village_popup').addEventListener('click', functio
     }
 })
 
-document.getElementById('add_village_btn').addEventListener('click', function(){
-    document.getElementById('map').style.cursor = 'pointer';
-})
+function add_new_village_fun(village, org_id) {
+    // Disable the default double-click zoom behavior
+    map.doubleClickZoom.disable();
+    
+    // Variables to hold the marker and circle references
+    let marker;
+    let circle;
 
+    // Add an event listener for double-click
+    map.on('dblclick', function(e) {
+        // Get the coordinates where the double-click occurred
+        var lat = e.latlng.lat;
+        var lng = e.latlng.lng;
+
+        if (marker) {
+            // Update the existing marker's position and popup content
+            marker.setLatLng([lat, lng])
+                  .getPopup()
+                  .setContent(show_marker_dragged_info(lat,lng,village,org_id));
+            marker.openPopup(); // Ensure the popup is opened after updating
+
+            // Update the existing circle's position
+            circle.setLatLng([lat, lng]);
+        } else {
+            // Create a new marker at the double-clicked location
+            marker = L.marker([lat, lng], { draggable: true }).addTo(map)
+                .bindPopup(show_marker_dragged_info(lat,lng,village,org_id))
+                .openPopup();
+
+            // Create a new circle around the marker
+            circle = L.circle([lat, lng], {
+                color: 'red', // Circle color
+                fillColor: '#30f', // Fill color
+                fillOpacity: 0.2, // Fill opacity
+                radius: 200 // Radius in meters
+            }).addTo(map);
+
+            // Add an event listener for the marker's dragend event
+            marker.on('dragend', function(e) {
+                var newLat = e.target.getLatLng().lat;
+                var newLng = e.target.getLatLng().lng;
+                
+                // Update the popup content with the new coordinates
+                marker.getPopup().setContent(show_marker_dragged_info(newLat, newLng,village,org_id));
+                marker.openPopup(); // Ensure the popup is opened after updating
+
+                // Update the circle's position
+                circle.setLatLng([newLat, newLng]);
+            });
+        }
+    });
+}
+
+function show_marker_dragged_info(Latitudes, Longitudes, theVillage, Org_id){
+    putTableIDStats('Village', theVillage, Latitudes, Longitudes, Org_id)
+    let theStringElement = `<h3>Drag me to ${theVillage} village</h3> <p><b>Latitude: </b>${Latitudes}</p><p><b>Longitude: </b>${Longitudes}</p> <button onclick="postData()" class="add_village_coordinates_btn">Submit ${theVillage}'s Geocodes</button>`;
+    // $('#map_hover_lat_lng').html(`Lat: ${Latitudes} Lng: ${Longitudes}`);
+    return theStringElement;
+}
+
+
+// document.getElementById('add_village_btn').addEventListener('click', function(){
+//     document.getElementById('map').style.cursor = 'progress';
+//     if (isAuthenticated()) {
+//         add_new_village_fun();
+//     }
+// })

@@ -213,7 +213,9 @@ document.addEventListener("DOMContentLoaded", () => {
                   //fetch from county
                   //alert("The village was not found, login to pin point and add the new village:");
                   document.getElementById('add_village_popup').style.display = 'block';
-                  add_new_village_fun(newVillageName,org_id);
+                  if(isAuthenticated()){
+                    add_new_village_fun(newVillageName,org_id);
+                  }
                 }
 
               })

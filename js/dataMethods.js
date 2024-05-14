@@ -227,6 +227,14 @@ function add_new_village_fun(village, org_id) {
             }).addTo(map);
 
             // Add an event listener for the marker's dragend event
+            marker.on('drag', function(e) {
+                var newLat = e.target.getLatLng().lat;
+                var newLng = e.target.getLatLng().lng;
+
+                marker.getPopup().setContent(show_marker_dragged_info(newLat, newLng,village,org_id));
+            });
+
+            // Add an event listener for the marker's dragend event
             marker.on('dragend', function(e) {
                 var newLat = e.target.getLatLng().lat;
                 var newLng = e.target.getLatLng().lng;

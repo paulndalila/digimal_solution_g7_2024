@@ -281,13 +281,13 @@ document.addEventListener("DOMContentLoaded", () => {
   async function processUser(level, org_id, parent_id) {
     
     const locationName = await returnLocationName(org_id);
-    const parent = '';
+    const parent = await returnLocationName(parent_id);;
 
-    if (level !== 1){
-      parent = await returnLocationName(parent_id);
-    }
+    // if (level !== 1){
+      
+    // }
 
-    alert(`Level ${level} User: ${locationName}`);
+    // alert(`Level ${level} User: ${locationName}`);
 
     if (level === 1) {
       // National level

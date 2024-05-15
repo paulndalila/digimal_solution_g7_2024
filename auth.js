@@ -1,6 +1,16 @@
 // Dummy user data stored in array format
 const users = [
   {
+    id: "5",
+    user: "Paul",
+    user_id: 987654321,
+    password: "password0",
+    level: 1,
+    name: "Kenya",
+    level_name: "Country",
+    org_Id: "HfVjCurKxh2"
+  },
+  {
     id: "1",
     user: "John",
     user_id: 123456789,

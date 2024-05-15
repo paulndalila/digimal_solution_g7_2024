@@ -32,7 +32,7 @@ function zoomIntoCounty(theLocation, distinct){
         zoom_level = 16;
     }
 
-    //console.log(theLocation)
+    console.log(theLocation)
 
     fetch(`https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(theLocation)}`)
     .then(response => response.json())
@@ -42,7 +42,7 @@ function zoomIntoCounty(theLocation, distinct){
       });                   
 
         if (filteredAddresses.length > 0) {
-         map.setView([filteredAddresses[0].lat, filteredAddresses[0].lon], zoom_level);
+            map.setView([filteredAddresses[0].lat, filteredAddresses[0].lon], zoom_level);
         } else {
             console.log('.')
         }
@@ -73,7 +73,7 @@ function putTableStats(type, location, lat, lon){
 }
 
 //showAndMarkLocation
-function show_map_and_pin_location(type, location, lat, lon, id){
+async function show_map_and_pin_location(type, location, lat, lon, id){
     var myIcon = L.icon({
         iconUrl: './maps/images/pin24.png',
         iconRetinaUrl: './maps/images/pin48.png',
@@ -84,12 +84,19 @@ function show_map_and_pin_location(type, location, lat, lon, id){
     
     map.setView([lat, lon], 16);
 
-    var popup = '<div id="marker_popup"><b>'+type+': </b>'+location + '<br/><b>Latitude: </b>'+lat+'<br/><b>Longitude: </b>'+lon+'<br/><button onClick="postData()" class="post_btn">Post Geocodes</button></div>'
-    //var popup = '<div id="marker_popup"><b>'+type+': </b>'+location + '<br/><b>Latitude: </b>'+lat+'<br/><b>Longitude: </b>'+lon+'</div>'
+    var popup = '<div id="marker_popup"><b>'+type+': </b>'+location + '<br/><b>Latitude: </b>'+lat+'<br/><b>Longitude: </b>'+lon+'<br/><button onClick="postData()" class="post_btn">Post Geocodes</button></div>';
+
+    //check village, add details without post geo button if it exists+
+    const village_marker_exists = await getCoordinatesByOrgId(id);
+
+    if(village_marker_exists !=null){
+        popup = '<div id="marker_popup"><b>'+type+': </b>'+location + '<br/><b>Latitude: </b>'+lat+'<br/><b>Longitude: </b>'+lon+'</div>';
+    }
 
     var m = L.marker([lat, lon], {
     icon: myIcon,
     }).bindPopup(popup).addTo(map);
+    m.openPopup();
        
     if(id === undefined || id === null || id === ''){
         putTableStats(type, location, lat, lon)
@@ -127,21 +134,73 @@ function postData(){
     }
 }
 
+//post to json server
+function postUserNData(){
+    const lat = document.getElementById('lat').value;
+    const long = document.getElementById('lon').value;
+
+    if(document.getElementById('v_id')){
+        const id = document.getElementById('v_id').value
+
+        //fetch and display user levels
+        const userData = localStorage.getItem("user");
+        const user = JSON.parse(userData);
+
+        fetch('http://localhost:3000/data', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+    
+            body: JSON.stringify({ 
+                org_id: id,
+                Latitude: lat,
+                Longitude: long,
+                chp_id: user.user_id
+            }),
+        })
+        .then(response => response.json())
+        .then(data => alert('Successfully posted the co-ordinates!'))
+        .catch(error => alert('Error:'+ error));
+
+    }else{
+
+        alert('Cannot post coordinates for a region that is not a village!')
+    }
+}
+
+//check if org_id exists and returns geocodes if true
+async function getCoordinatesByOrgId(org_id) {
+    try {
+        const response = await fetch('http://localhost:3000/data');
+        if (!response.ok) {
+            throw new Error('Network response was not ok');
+        }
+        const data = await response.json();
+        const entry = data.find(entry => entry.org_id === org_id);
+        if (entry) {
+            return { lat: entry.Latitude, long: entry.Longitude };
+        } else {
+            return null;
+        }
+    } catch (error) {
+        console.error('Error:', error);
+        return null;
+    }
+}
+
 //get first word in a sentence or phrase
 function getFirstWordOfThePlace(sentence) {
-  if(sentence.includes('Sub County')){
-    console.log(sentence.replace(/\b(?:county|sub\scounty)\b/gi, '').trim())
-    return sentence.replace(/\b(?:county|sub\scounty)\b/gi, '').trim();
-  }else if(sentence.includes('County')){
-    console.log(sentence.replace(/\bcounty\b/gi, '').trim())
-    return sentence.replace(/\bcounty\b/gi, '').trim();
-  }else if(sentence.includes('Ward')){
-    console.log(sentence.replace(/\ward\b/gi, '').trim())
-    return sentence.replace(/\ward\b/gi, '').trim();
-  }else{
-    var place = sentence.split(" ");
-    return place[0];
-  }
+    if (sentence.includes('Sub County')) {
+        return sentence.replace(/\b(?:county|sub county)\b/gi, '').trim();
+    } else if (sentence.includes('County')) {
+        return sentence.replace(/\bcounty\b/gi, '').trim();
+    } else if (sentence.includes('Ward')) {
+        return sentence.replace(/\bward\b/gi, '').trim();
+    } else {
+        var place = sentence.split(" ");
+        return place[0];
+    }
 }
 
 //Full screen view of the map
@@ -252,7 +311,7 @@ function add_new_village_fun(village, org_id) {
 
 function show_marker_dragged_info(Latitudes, Longitudes, theVillage, Org_id){
     putTableIDStats('Village', theVillage, Latitudes, Longitudes, Org_id)
-    let theStringElement = `<h3>Drag me to ${theVillage} village</h3> <p><b>Latitude: </b>${Latitudes}</p><p><b>Longitude: </b>${Longitudes}</p> <button onclick="postData()" class="add_village_coordinates_btn">Submit ${theVillage}'s Geocodes</button>`;
+    let theStringElement = `<h3>Drag me to ${theVillage} village</h3> <p><b>Latitude: </b>${Latitudes}</p><p><b>Longitude: </b>${Longitudes}</p> <button onclick="postUserNData()" class="add_village_coordinates_btn">Submit ${theVillage}'s Geocodes</button>`;
     // $('#map_hover_lat_lng').html(`Lat: ${Latitudes} Lng: ${Longitudes}`);
     return theStringElement;
 }

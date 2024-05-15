@@ -28,7 +28,7 @@
     </div>
     <div class="buttons" id="buttons">
       <!-- <button id="search_household_btn">Search household</button> -->
-      <button id="add_village_btn" style="display: none;">Double Tap the Map</button>
+      <button id="add_village_btn" style="display: none;">Double Tap the Map To Set Geocodes</button>
       <button class="btn" id="loginBtn" onclick="openForm()">Login</button>
     </div>
   </div>
@@ -58,7 +58,7 @@
 
     <div id="locations">
       <div id="form">
-        <input type="text" id="search" placeholder="Search locations by name...">
+        <!-- <input type="text" id="search" placeholder="Search locations by name..."> -->
         <!-- <button type="submit" id="search_query_btn"><span class="material-icons">search</span> </button>     -->
       </div>
       <ul id="resultsList"></ul>
@@ -95,7 +95,11 @@
             <th></th>
           </tr>
           <tr>
-            <td>Distribution posts:</td>
+            <td>Supervisor:</td>
+            <td id="supervisor">--</td>
+          </tr>
+          <tr>
+            <td>Distributions:</td>
             <td>0</td>
           </tr>
           <tr>
@@ -119,7 +123,7 @@
           <a href="graphs.html" class="post_btn">See Graphs</a>
           <button onclick="fullScreenView()">Map Full Screenview</button> 
           <a href="login.html" id="accessTokenLink">Get DigiMal Access Token</a>
-         <script src="js/accessToken.js"></script>
+          <script src="js/accessToken.js"></script>
         </div>
       </div>     
 
@@ -181,7 +185,6 @@
     <script src="auth.js"></script>
   </div>
 
-  <script type="text/javascript" src="maps/markers.js"></script>  
   <!-- leaflet map -->
   <script type="text/javascript" src="maps/leaf-demo.js"></script>  
   <!-- navigation bar responsiveness -->
